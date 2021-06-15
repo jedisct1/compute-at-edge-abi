@@ -1,0 +1,96 @@
+(module $fastly_http_resp
+    (use * from $typenames)
+
+    (@interface func (export "new")
+        (result $err (expected $response_handle (error $fastly_status)))
+    )
+
+    ;; The following directly mirror header & version methods on req
+
+    (@interface func (export "header_names_get")
+        (param $h $response_handle)
+        (param $buf (@witx pointer (@witx char8)))
+        (param $buf_len (@witx usize))
+        (param $cursor $multi_value_cursor)
+        (param $ending_cursor_out (@witx pointer $multi_value_cursor_result))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_value_get")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (param $value (@witx pointer (@witx char8)))
+        (param $value_max_len (@witx usize))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_values_get")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (param $buf (@witx pointer (@witx char8)))
+        (param $buf_len (@witx usize))
+        (param $cursor $multi_value_cursor)
+        (param $ending_cursor_out (@witx pointer $multi_value_cursor_result))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_values_set")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (param $values (list (@witx char8))) ;; contains multiple values separated by \0
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_insert")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (param $value (list u8))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_append")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (param $value (list u8))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "header_remove")
+        (param $h $response_handle)
+        (param $name (list u8))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "version_get")
+        (param $h $response_handle)
+        (result $err (expected $http_version (error $fastly_status)))
+    )
+
+    (@interface func (export "version_set")
+        (param $h $response_handle)
+        (param $version $http_version)
+        (result $err (expected (error $fastly_status)))
+    )
+    ;; End directly mirror header & version methods on req
+
+    (@interface func (export "send_downstream")
+        (param $h $response_handle)
+        (param $b $body_handle)
+        (param $streaming u32)
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "status_get")
+        (param $h $response_handle)
+        (result $err (expected $http_status (error $fastly_status)))
+    )
+
+    (@interface func (export "status_set")
+        (param $h $response_handle)
+        (param $status $http_status)
+        (result $err (expected (error $fastly_status)))
+    )
+)

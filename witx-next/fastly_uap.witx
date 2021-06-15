@@ -1,0 +1,25 @@
+(module $fastly_uap
+    (use * from $typenames)
+
+    (@interface func (export "parse")
+        (param $user_agent string)
+
+        (param $family (@witx pointer (@witx char8)))
+        (param $family_len (@witx usize))
+        (param $family_nwritten_out (@witx pointer (@witx usize)))
+
+        (param $major (@witx pointer (@witx char8)))
+        (param $major_len (@witx usize))
+        (param $major_nwritten_out (@witx pointer (@witx usize)))
+
+        (param $minor (@witx pointer (@witx char8)))
+        (param $minor_len (@witx usize))
+        (param $minor_nwritten_out (@witx pointer (@witx usize)))
+
+        (param $patch (@witx pointer (@witx char8)))
+        (param $patch_len (@witx usize))
+        (param $patch_nwritten_out (@witx pointer (@witx usize)))
+
+        (result $err (expected (error $fastly_status)))
+    )
+)

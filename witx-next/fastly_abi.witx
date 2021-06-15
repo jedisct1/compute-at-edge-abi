@@ -1,0 +1,8 @@
+(module $fastly_abi
+    (use * from $typenames)
+
+    (@interface func (export "init")
+        (param $abi_version u64)
+        (result $err (expected (error $fastly_status)))
+    )
+)
