@@ -1,0 +1,32 @@
+(module $fastly_http_body
+    (use * from $typenames)
+
+    (@interface func (export "append")
+        (param $dest $body_handle)
+        (param $src $body_handle)
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "new")
+        (result $err (expected $body_handle (error $fastly_status)))
+    )
+
+    (@interface func (export "read")
+        (param $h $body_handle)
+        (param $buf (@witx pointer u8))
+        (param $buf_len (@witx usize))
+        (result $err (expected $num_bytes (error $fastly_status)))
+    )
+
+    (@interface func (export "write")
+        (param $h $body_handle)
+        (param $buf (list u8))
+        (param $end $body_write_end)
+        (result $err (expected $num_bytes (error $fastly_status)))
+    )
+
+    (@interface func (export "close")
+        (param $h $body_handle)
+        (result $err (expected (error $fastly_status)))
+    )
+)

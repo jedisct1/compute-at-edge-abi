@@ -1,0 +1,15 @@
+(module $fastly_log
+    (use * from $typenames)
+
+    (@interface func (export "endpoint_get")
+        (param $name (list u8))
+        (result $err (expected $endpoint_handle (error $fastly_status)))
+    )
+
+    (@interface func (export "write")
+        (param $h $endpoint_handle)
+        (param $msg (list u8))
+        (result $err (expected $num_bytes (error $fastly_status)))
+    )
+)
+
