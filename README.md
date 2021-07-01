@@ -2,7 +2,7 @@
 
 This repository contains `witx` definitions for the Compute@Edge platform ABI.
 
-These definitions have been [updated](https://github.com/jedisct1/compute-at-edge-abi/tree/witx-next/witx-next)
+This fork includes definitions that have been [updated](https://github.com/jedisct1/compute-at-edge-abi/tree/witx-next/witx-next)
 to be compatible with the [witx-codegen](https://github.com/jedisct1/witx-codegen) code generator.
 
 ### [Documentation](https://github.com/jedisct1/compute-at-edge-abi/tree/witx-next/doc)
