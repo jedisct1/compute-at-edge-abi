@@ -1,6 +1,69 @@
 * API overview *
 
 
+---------------------- Module: [typenames] ----------------------
+
+enum fastly_status: (tag: u32)
+    - `ok`: fastly_status
+    - `error`: fastly_status
+    - `inval`: fastly_status
+    - `badf`: fastly_status
+    - `buflen`: fastly_status
+    - `unsupported`: fastly_status
+    - `badalign`: fastly_status
+    - `httpinvalid`: fastly_status
+    - `httpuser`: fastly_status
+    - `httpincomplete`: fastly_status
+    - `none`: fastly_status
+    - `httpheadtoolarge`: fastly_status
+    - `httpinvalidstatus`: fastly_status
+
+enum http_version: (tag: u32)
+    - `http_09`: http_version
+    - `http_10`: http_version
+    - `http_11`: http_version
+    - `h2`: http_version
+    - `h3`: http_version
+
+alias http_status = u16
+
+enum body_write_end: (tag: u32)
+    - `back`: body_write_end
+    - `front`: body_write_end
+
+alias body_handle = handle
+
+alias request_handle = handle
+
+alias response_handle = handle
+
+alias pending_request_handle = handle
+
+alias endpoint_handle = handle
+
+alias dictionary_handle = handle
+
+alias multi_value_cursor = u32
+
+alias multi_value_cursor_result = i64
+
+constants cache_override_tag: (type: u32)
+predefined constants for cache_override_tag:
+    - `none` = 0x1
+    - `pass` = 0x2
+    - `ttl` = 0x4
+    - `stale_while_revalidate` = 0x8
+    - `pci` = 0x10
+
+alias num_bytes = usize
+
+alias header_count = u32
+
+alias is_done = u32
+
+alias done_idx = u32
+
+
 ---------------------- Module: [fastly_abi] ----------------------
 
 enum fastly_status: (tag: u32)
@@ -476,67 +539,3 @@ function parse(): fastly_status
         - `patch_len`: usize
         - `patch_nwritten_out`: mut_ptr<usize>
     - No output
-
-
----------------------- Module: [typenames] ----------------------
-
-enum fastly_status: (tag: u32)
-    - `ok`: fastly_status
-    - `error`: fastly_status
-    - `inval`: fastly_status
-    - `badf`: fastly_status
-    - `buflen`: fastly_status
-    - `unsupported`: fastly_status
-    - `badalign`: fastly_status
-    - `httpinvalid`: fastly_status
-    - `httpuser`: fastly_status
-    - `httpincomplete`: fastly_status
-    - `none`: fastly_status
-    - `httpheadtoolarge`: fastly_status
-    - `httpinvalidstatus`: fastly_status
-
-enum http_version: (tag: u32)
-    - `http_09`: http_version
-    - `http_10`: http_version
-    - `http_11`: http_version
-    - `h2`: http_version
-    - `h3`: http_version
-
-alias http_status = u16
-
-enum body_write_end: (tag: u32)
-    - `back`: body_write_end
-    - `front`: body_write_end
-
-alias body_handle = handle
-
-alias request_handle = handle
-
-alias response_handle = handle
-
-alias pending_request_handle = handle
-
-alias endpoint_handle = handle
-
-alias dictionary_handle = handle
-
-alias multi_value_cursor = u32
-
-alias multi_value_cursor_result = i64
-
-constants cache_override_tag: (type: u32)
-predefined constants for cache_override_tag:
-    - `none` = 0x1
-    - `pass` = 0x2
-    - `ttl` = 0x4
-    - `stale_while_revalidate` = 0x8
-    - `pci` = 0x10
-
-alias num_bytes = usize
-
-alias header_count = u32
-
-alias is_done = u32
-
-alias done_idx = u32
-
