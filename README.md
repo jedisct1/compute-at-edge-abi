@@ -1,4 +1,4 @@
-# 🔗 compute-at-edge-abi-next
+# Fastly Compute@Edge ABI
 
 This repository contains `witx` definitions for the Compute@Edge platform ABI.
 
