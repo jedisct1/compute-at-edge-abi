@@ -20,7 +20,9 @@ jobs:
       - name: Validate witx
         run: |
           cargo install witx-codegen
-          witx-codegen -t assemblyscript witx-next/*.witx > /dev/null
+          for i in rust assemblyscript zig markdown overview; do
+            witx-codegen -t "$i" witx-next/*.witx > /dev/null || exit 1
+          done
 
       - name: Check indentation
         run: |
