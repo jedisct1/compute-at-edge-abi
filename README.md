@@ -14,7 +14,7 @@ to be compatible with the [witx-codegen](https://github.com/jedisct1/witx-codege
 * [fastly_http_req](https://github.com/jedisct1/compute-at-edge-abi/blob/witx-next/doc/fastly_http_req.witx.md)
 * [fastly_http_resp](https://github.com/jedisct1/compute-at-edge-abi/blob/witx-next/doc/fastly_http_resp.witx.md)
 * [fastly_log](https://github.com/jedisct1/compute-at-edge-abi/blob/witx-next/doc/fastly_log.witx.md)
-* [fastly_udp](https://github.com/jedisct1/compute-at-edge-abi/blob/witx-next/doc/fastly_uap.witx.md)
+* [fastly_uap](https://github.com/jedisct1/compute-at-edge-abi/blob/witx-next/doc/fastly_uap.witx.md)
 
 ### API overview
 
