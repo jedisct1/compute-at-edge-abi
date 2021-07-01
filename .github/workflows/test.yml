@@ -18,7 +18,9 @@ jobs:
           override: true
 
       - name: Validate witx
-        run: cargo run --manifest-path=validate-witx/Cargo.toml ./compute-at-edge.witx
+        run: |
+          cargo install witx-codegen
+          witx-codegen -t assemblyscript witx-next/*.witx > /dev/null
 
       - name: Check indentation
         run: |
