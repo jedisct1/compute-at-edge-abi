@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`body_downstream_get()`](#body_downstream_get)] - [[`cache_override_set()`](#cache_override_set)] - [[`cache_override_v2_set()`](#cache_override_v2_set)] - [[`downstream_client_ip_addr()`](#downstream_client_ip_addr)] - [[`downstream_tls_cipher_openssl_name()`](#downstream_tls_cipher_openssl_name)] - [[`downstream_tls_protocol()`](#downstream_tls_protocol)] - [[`downstream_tls_client_hello()`](#downstream_tls_client_hello)] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`original_header_names_get()`](#original_header_names_get)] - [[`original_header_count()`](#original_header_count)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`method_get()`](#method_get)] - [[`method_set()`](#method_set)] - [[`uri_get()`](#uri_get)] - [[`uri_set()`](#uri_set)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send()`](#send)] - [[`send_async()`](#send_async)] - [[`send_async_streaming()`](#send_async_streaming)] - [[`pending_req_poll()`](#pending_req_poll)] - [[`pending_req_wait()`](#pending_req_wait)] - [[`pending_req_select()`](#pending_req_select)]
+[**[All](#functions)**] - [[`body_downstream_get()`](#body_downstream_get)] - [[`cache_override_set()`](#cache_override_set)] - [[`cache_override_v2_set()`](#cache_override_v2_set)] - [[`downstream_client_ip_addr()`](#downstream_client_ip_addr)] - [[`downstream_tls_cipher_openssl_name()`](#downstream_tls_cipher_openssl_name)] - [[`downstream_tls_protocol()`](#downstream_tls_protocol)] - [[`downstream_tls_client_hello()`](#downstream_tls_client_hello)] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`original_header_names_get()`](#original_header_names_get)] - [[`original_header_count()`](#original_header_count)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`method_get()`](#method_get)] - [[`method_set()`](#method_set)] - [[`uri_get()`](#uri_get)] - [[`uri_set()`](#uri_set)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send()`](#send)] - [[`send_async()`](#send_async)] - [[`send_async_streaming()`](#send_async_streaming)] - [[`pending_req_poll()`](#pending_req_poll)] - [[`pending_req_wait()`](#pending_req_wait)] - [[`pending_req_select()`](#pending_req_select)] - [[`close()`](#close)]
 
 ## Types
 
@@ -538,6 +538,17 @@ Returned error type: _[`fastly_status`](#fastly_status)_
 * _[`done_idx`](#done_idx)_ mutable pointer
 * _[`response_handle`](#response_handle)_ mutable pointer
 * _[`body_handle`](#body_handle)_ mutable pointer
+
+---
+
+### [`close()`](#close)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`h`**: _[`request_handle`](#request_handle)_
+
+This function has no output.
 
 ---
 

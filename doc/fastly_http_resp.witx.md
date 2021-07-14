@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send_downstream()`](#send_downstream)] - [[`status_get()`](#status_get)] - [[`status_set()`](#status_set)]
+[**[All](#functions)**] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send_downstream()`](#send_downstream)] - [[`status_get()`](#status_get)] - [[`status_set()`](#status_set)] - [[`close()`](#close)]
 
 ## Types
 
@@ -315,6 +315,17 @@ Returned error type: _[`fastly_status`](#fastly_status)_
 
 * **`h`**: _[`response_handle`](#response_handle)_
 * **`status`**: _[`http_status`](#http_status)_
+
+This function has no output.
+
+---
+
+### [`close()`](#close)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`h`**: _[`response_handle`](#response_handle)_
 
 This function has no output.
 
