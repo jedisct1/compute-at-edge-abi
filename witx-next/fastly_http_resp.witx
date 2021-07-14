@@ -93,4 +93,9 @@
         (param $status $http_status)
         (result $err (expected (error $fastly_status)))
     )
+
+    (@interface func (export "close")
+        (param $h $response_handle)
+        (result $err (expected (error $fastly_status)))
+    )
 )

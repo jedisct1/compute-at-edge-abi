@@ -210,4 +210,9 @@
                 (tuple $done_idx $response_handle $body_handle)
                 (error $fastly_status)))
     )
+
+    (@interface func (export "close")
+        (param $h $request_handle)
+        (result $err (expected (error $fastly_status)))
+    )
 )
