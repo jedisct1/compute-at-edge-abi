@@ -31,6 +31,9 @@ Enumeration with tag type: `u32`, and the following members:
 * **`httpheadtoolarge`**: _[`fastly_status`](#fastly_status)_
 * **`httpinvalidstatus`**: _[`fastly_status`](#fastly_status)_
 
+> Status codes returned from hostcalls.
+
+
 ---
 
 ### _[`http_version`](#http_version)_
@@ -43,10 +46,16 @@ Enumeration with tag type: `u32`, and the following members:
 * **`h2`**: _[`http_version`](#http_version)_
 * **`h3`**: _[`http_version`](#http_version)_
 
+> A tag indicating HTTP protocol versions.
+
+
 ---
 
 ### _[`http_status`](#http_status)_
 Alias for `u16`.
+
+
+> HTTP status codes.
 
 
 ---
@@ -64,10 +73,16 @@ Enumeration with tag type: `u32`, and the following members:
 Alias for `handle`.
 
 
+> A handle to an HTTP request or response body.
+
+
 ---
 
 ### _[`request_handle`](#request_handle)_
 Alias for `handle`.
+
+
+> A handle to an HTTP request.
 
 
 ---
@@ -76,10 +91,16 @@ Alias for `handle`.
 Alias for `handle`.
 
 
+> A handle to an HTTP response.
+
+
 ---
 
 ### _[`pending_request_handle`](#pending_request_handle)_
 Alias for `handle`.
+
+
+> A handle to a currently-pending asynchronous HTTP request.
 
 
 ---
@@ -88,10 +109,16 @@ Alias for `handle`.
 Alias for `handle`.
 
 
+> A handle to a logging endpoint.
+
+
 ---
 
 ### _[`dictionary_handle`](#dictionary_handle)_
 Alias for `handle`.
+
+
+> A handle to an Edge Dictionary.
 
 
 ---
@@ -100,10 +127,16 @@ Alias for `handle`.
 Alias for `u32`.
 
 
+> A "multi-value" cursor.
+
+
 ---
 
 ### _[`multi_value_cursor_result`](#multi_value_cursor_result)_
 Alias for `i64`.
+
+
+> -1 represents "finished", non-negative represents a $multi_value_cursor:
 
 
 ---
@@ -119,6 +152,9 @@ Predefined constants for _[`cache_override_tag`](#cache_override_tag)_:
 * **`ttl`** = `0x4`
 * **`stale_while_revalidate`** = `0x8`
 * **`pci`** = `0x10`
+
+> An override for response caching behavior.
+
 
 ---
 
