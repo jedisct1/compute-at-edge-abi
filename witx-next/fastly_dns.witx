@@ -40,9 +40,6 @@
     (@interface func (export "lookup_raw")
         (param $query (@witx const_pointer (@witx char8)))
         (param $query_len (@witx usize))
-        (param $response (@witx pointer (@witx char8)))
-        (param $response_len (@witx usize))
-        (param $nwritten_out (@witx pointer (@witx usize)))
         (result $err (expected $dns_lookup_handle (error $fastly_status)))
     )
 
