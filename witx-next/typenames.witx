@@ -106,4 +106,8 @@
     (typename $header_count u32)
     (typename $is_done u32)
     (typename $done_idx u32)
+
+    (typename $content_encodings
+        (flags (@witx repr u32)
+            $gzip))
 )

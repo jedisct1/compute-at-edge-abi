@@ -5,11 +5,11 @@
 
 ### Types list:
 
-[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_]
+[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_] - [_[`content_encodings`](#content_encodings)_]
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`body_downstream_get()`](#body_downstream_get)] - [[`cache_override_set()`](#cache_override_set)] - [[`cache_override_v2_set()`](#cache_override_v2_set)] - [[`downstream_client_ip_addr()`](#downstream_client_ip_addr)] - [[`downstream_tls_cipher_openssl_name()`](#downstream_tls_cipher_openssl_name)] - [[`downstream_tls_protocol()`](#downstream_tls_protocol)] - [[`downstream_tls_client_hello()`](#downstream_tls_client_hello)] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`original_header_names_get()`](#original_header_names_get)] - [[`original_header_count()`](#original_header_count)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`method_get()`](#method_get)] - [[`method_set()`](#method_set)] - [[`uri_get()`](#uri_get)] - [[`uri_set()`](#uri_set)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send()`](#send)] - [[`send_async()`](#send_async)] - [[`send_async_streaming()`](#send_async_streaming)] - [[`pending_req_poll()`](#pending_req_poll)] - [[`pending_req_wait()`](#pending_req_wait)] - [[`pending_req_select()`](#pending_req_select)] - [[`close()`](#close)]
+[**[All](#functions)**] - [[`body_downstream_get()`](#body_downstream_get)] - [[`cache_override_set()`](#cache_override_set)] - [[`cache_override_v2_set()`](#cache_override_v2_set)] - [[`downstream_client_ip_addr()`](#downstream_client_ip_addr)] - [[`downstream_tls_cipher_openssl_name()`](#downstream_tls_cipher_openssl_name)] - [[`downstream_tls_protocol()`](#downstream_tls_protocol)] - [[`downstream_tls_client_hello()`](#downstream_tls_client_hello)] - [[`new()`](#new)] - [[`header_names_get()`](#header_names_get)] - [[`original_header_names_get()`](#original_header_names_get)] - [[`original_header_count()`](#original_header_count)] - [[`header_value_get()`](#header_value_get)] - [[`header_values_get()`](#header_values_get)] - [[`header_values_set()`](#header_values_set)] - [[`header_insert()`](#header_insert)] - [[`header_append()`](#header_append)] - [[`header_remove()`](#header_remove)] - [[`method_get()`](#method_get)] - [[`method_set()`](#method_set)] - [[`uri_get()`](#uri_get)] - [[`uri_set()`](#uri_set)] - [[`version_get()`](#version_get)] - [[`version_set()`](#version_set)] - [[`send()`](#send)] - [[`send_async()`](#send_async)] - [[`send_async_streaming()`](#send_async_streaming)] - [[`pending_req_poll()`](#pending_req_poll)] - [[`pending_req_wait()`](#pending_req_wait)] - [[`pending_req_select()`](#pending_req_select)] - [[`close()`](#close)] - [[`auto_decompress_response_set()`](#auto_decompress_response_set)]
 
 ## Types
 
@@ -179,6 +179,16 @@ Alias for `u32`.
 ### _[`done_idx`](#done_idx)_
 Alias for `u32`.
 
+
+---
+
+### _[`content_encodings`](#content_encodings)_
+
+Set of constants, of type `u32`
+
+Predefined constants for _[`content_encodings`](#content_encodings)_:
+
+* **`gzip`** = `1`
 
 ---
 
@@ -583,6 +593,18 @@ Returned error type: _[`fastly_status`](#fastly_status)_
 #### Input:
 
 * **`h`**: _[`request_handle`](#request_handle)_
+
+This function has no output.
+
+---
+
+### [`auto_decompress_response_set()`](#auto_decompress_response_set)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`h`**: _[`request_handle`](#request_handle)_
+* **`encodings`**: _[`content_encodings`](#content_encodings)_
 
 This function has no output.
 

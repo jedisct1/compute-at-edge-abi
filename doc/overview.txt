@@ -63,6 +63,10 @@ alias is_done = u32
 
 alias done_idx = u32
 
+constants content_encodings: (type: u32)
+predefined constants for content_encodings:
+    - `gzip` = 1
+
 function init(): fastly_status
     - Input:
         - `abi_version`: u64
@@ -549,4 +553,8 @@ alias header_count = u32
 alias is_done = u32
 
 alias done_idx = u32
+
+constants content_encodings: (type: u32)
+predefined constants for content_encodings:
+    - `gzip` = 1
 
