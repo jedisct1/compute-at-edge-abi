@@ -1,5 +1,5 @@
 
-# Module: fastly_geo
+# Module: fastly_purge
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`purge_surrogate_key()`](#purge_surrogate_key)]
 
 ## Types
 
@@ -411,16 +411,14 @@ Structure, with the following members:
 
 ## Functions
 
-### [`lookup()`](#lookup)
+### [`purge_surrogate_key()`](#purge_surrogate_key)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`nwritten_out`**: `usize` mutable pointer
+* **`surrogate_key`**: `string`
+* **`options_mask`**: _[`purge_options_mask`](#purge_options_mask)_
+* **`options`**: _[`purge_options`](#purge_options)_ mutable pointer
 
 This function has no output.
 

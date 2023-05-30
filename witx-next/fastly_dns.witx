@@ -2,6 +2,10 @@
 (module $fastly_dns
     (use * from $typenames)
 
+    (resource $dns_lookup_res)
+
+    (typename $dns_lookup_handle (handle $dns_lookup_res))
+
     ;;; Lookup the IP addresses (IPv4 + IPv6) associated with a name.
     ;;; Returns a handle to be consumed by lookup_wait().
     (@interface func (export "lookup_addr")

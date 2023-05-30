@@ -40,7 +40,8 @@
     (@interface func (export "header_values_set")
         (param $h $response_handle)
         (param $name (list u8))
-        (param $values (list (@witx char8))) ;; contains multiple values separated by \0
+        ;;; contains multiple values separated by \0
+        (param $values (list (@witx char8)))
         (result $err (expected (error $fastly_status)))
     )
 
@@ -94,8 +95,22 @@
         (result $err (expected (error $fastly_status)))
     )
 
-    (@interface func (export "close")
+    (@interface func(export "close")
         (param $h $response_handle)
+        (result $err (expected (error $fastly_status)))
+    )
+
+    ;;; Adjust how this response's framing headers are determined.
+    (@interface func (export "framing_headers_mode_set")
+        (param $h $response_handle)
+        (param $mode $framing_headers_mode)
+        (result $err (expected (error $fastly_status)))
+    )
+
+    ;;; Adjust the response's connection reuse mode.
+    (@interface func (export "http_keepalive_mode_set")
+        (param $h $response_handle)
+        (param $mode $http_keepalive_mode)
         (result $err (expected (error $fastly_status)))
     )
 )

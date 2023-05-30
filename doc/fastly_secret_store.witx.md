@@ -1,5 +1,5 @@
 
-# Module: fastly_geo
+# Module: fastly_secret_store
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`open()`](#open)] - [[`get()`](#get)] - [[`plaintext()`](#plaintext)]
 
 ## Types
 
@@ -411,13 +411,39 @@ Structure, with the following members:
 
 ## Functions
 
-### [`lookup()`](#lookup)
+### [`open()`](#open)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
+* **`name`**: `string`
+
+#### Output:
+
+* _[`secret_store_handle`](#secret_store_handle)_ mutable pointer
+
+---
+
+### [`get()`](#get)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`store`**: _[`secret_store_handle`](#secret_store_handle)_
+* **`key`**: `string`
+
+#### Output:
+
+* _[`secret_handle`](#secret_handle)_ mutable pointer
+
+---
+
+### [`plaintext()`](#plaintext)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`secret`**: _[`secret_handle`](#secret_handle)_
 * **`buf`**: `char8` mutable pointer
 * **`buf_len`**: `usize`
 * **`nwritten_out`**: `usize` mutable pointer

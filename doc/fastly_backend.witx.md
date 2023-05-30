@@ -1,5 +1,5 @@
 
-# Module: fastly_geo
+# Module: fastly_backend
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`exists()`](#exists)] - [[`is_healthy()`](#is_healthy)] - [[`is_dynamic()`](#is_dynamic)] - [[`get_host()`](#get_host)] - [[`get_override_host()`](#get_override_host)] - [[`get_port()`](#get_port)] - [[`get_connect_timeout_ms()`](#get_connect_timeout_ms)] - [[`get_first_byte_timeout_ms()`](#get_first_byte_timeout_ms)] - [[`get_between_bytes_timeout_ms()`](#get_between_bytes_timeout_ms)] - [[`is_ssl()`](#is_ssl)] - [[`get_ssl_min_version()`](#get_ssl_min_version)] - [[`get_ssl_max_version()`](#get_ssl_max_version)]
 
 ## Types
 
@@ -411,18 +411,161 @@ Structure, with the following members:
 
 ## Functions
 
-### [`lookup()`](#lookup)
+### [`exists()`](#exists)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`backend_exists`](#backend_exists)_ mutable pointer
+
+---
+
+### [`is_healthy()`](#is_healthy)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`backend_health`](#backend_health)_ mutable pointer
+
+---
+
+### [`is_dynamic()`](#is_dynamic)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`is_dynamic`](#is_dynamic)_ mutable pointer
+
+---
+
+### [`get_host()`](#get_host)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+* **`value`**: `char8` mutable pointer
+* **`value_max_len`**: `usize`
 * **`nwritten_out`**: `usize` mutable pointer
 
 This function has no output.
+
+---
+
+### [`get_override_host()`](#get_override_host)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+* **`value`**: `char8` mutable pointer
+* **`value_max_len`**: `usize`
+* **`nwritten_out`**: `usize` mutable pointer
+
+This function has no output.
+
+---
+
+### [`get_port()`](#get_port)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`port`](#port)_ mutable pointer
+
+---
+
+### [`get_connect_timeout_ms()`](#get_connect_timeout_ms)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`timeout_ms`](#timeout_ms)_ mutable pointer
+
+---
+
+### [`get_first_byte_timeout_ms()`](#get_first_byte_timeout_ms)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`timeout_ms`](#timeout_ms)_ mutable pointer
+
+---
+
+### [`get_between_bytes_timeout_ms()`](#get_between_bytes_timeout_ms)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`timeout_ms`](#timeout_ms)_ mutable pointer
+
+---
+
+### [`is_ssl()`](#is_ssl)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`is_ssl`](#is_ssl)_ mutable pointer
+
+---
+
+### [`get_ssl_min_version()`](#get_ssl_min_version)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`tls_version`](#tls_version)_ mutable pointer
+
+---
+
+### [`get_ssl_max_version()`](#get_ssl_max_version)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`backend`**: `string`
+
+#### Output:
+
+* _[`tls_version`](#tls_version)_ mutable pointer
 
 ---
 

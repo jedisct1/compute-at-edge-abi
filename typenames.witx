@@ -2,48 +2,48 @@
 (typename $fastly_status
     (enum (@witx tag u32)
         ;;; Success value.
-        ;;
+        ;;;
         ;;; This indicates that a hostcall finished successfully.
         $ok
         ;;; Generic error value.
-        ;;
-        ;;; This means that some unexpected error occured during a hostcall.
+        ;;;
+        ;;; This means that some unexpected error occurred during a hostcall.
         $error
         ;;; Invalid argument.
         $inval
         ;;; Invalid handle.
-        ;;
-        ;;; Thrown when a request, response, or body handle is not valid.
+        ;;;
+        ;;; Returned when a request, response, or body handle is not valid.
         $badf
         ;;; Buffer length error.
-        ;;
-        ;;; Thrown when a buffer is too long.
+        ;;;
+        ;;; Returned when a buffer is too long.
         $buflen
         ;;; Unsupported operation error.
-        ;;
-        ;;; This error is thrown when some operation cannot be performed, because it is not supported.
+        ;;;
+        ;;; This error is returned when some operation cannot be performed, because it is not supported.
         $unsupported
         ;;; Alignment error.
-        ;;
-        ;;; This is thrown when a pointer does not point to a properly aligned slice of memory.
+        ;;;
+        ;;; This is returned when a pointer does not point to a properly aligned slice of memory.
         $badalign
         ;;; Invalid HTTP error.
-        ;;
-        ;;; This can be thrown when a method, URI, header, or status is not valid. This can also
-        ;;; be thrown if a message head is too large.
+        ;;;
+        ;;; This can be returned when a method, URI, header, or status is not valid. This can also
+        ;;; be returned if a message head is too large.
         $httpinvalid
         ;;; HTTP user error.
-        ;;
-        ;;; This is thrown in cases where user code caused an HTTP error. For example, attempt to send
+        ;;;
+        ;;; This is returned in cases where user code caused an HTTP error. For example, attempt to send
         ;;; a 1xx response code, or a request with a non-absolute URI. This can also be caused by
         ;;; an unexpected header: both `content-length` and `transfer-encoding`, for example.
         $httpuser
         ;;; HTTP incomplete message error.
-        ;;
-        ;;; This can be thrown when a stream ended unexpectedly.
+        ;;;
+        ;;; This can be returned when a stream ended unexpectedly.
         $httpincomplete
         ;;; A `None` error.
-        ;;
+        ;;;
         ;;; This status code is used to indicate when an optional value did not exist, as opposed to
         ;;; an empty value.
         $none
@@ -51,6 +51,11 @@
         $httpheadtoolarge
         ;;; Invalid HTTP status.
         $httpinvalidstatus
+        ;;; Limit exceeded
+        ;;;
+        ;;; This is returned when an attempt to allocate a resource has exceeded the maximum number of
+        ;;; resources permitted. For example, creating too many response handles.
+        $limitexceeded
     )
 )
 
@@ -87,6 +92,26 @@
 (typename $endpoint_handle (handle))
 ;;; A handle to an Edge Dictionary.
 (typename $dictionary_handle (handle))
+;;; A handle to an Object Store.
+(typename $object_store_handle (handle))
+;;; A handle to a pending KV request.
+(typename $pending_kv_lookup_handle (handle))
+;;; A handle to a Secret Store.
+(typename $secret_store_handle (handle))
+;;; A handle to an individual secret.
+(typename $secret_handle (handle))
+;;; A handle to an object supporting generic async operations.
+;;; Can be either a `body_handle` or a `pending_request_handle`.
+;;;
+;;; Each async item has an associated I/O action:
+;;;
+;;; * Pending requests: awaiting the response headers / `Response` object
+;;; * Normal bodies: reading bytes from the body
+;;; * Streaming bodies: writing bytes to the body
+;;;
+;;; For writing bytes, note that there is a large host-side buffer that bytes can eagerly be written
+;;; into, even before the origin itself consumes that data.
+(typename $async_item_handle (handle))
 
 ;;; A "multi-value" cursor.
 (typename $multi_value_cursor u32)
@@ -94,10 +119,9 @@
 (typename $multi_value_cursor_result s64)
 
 ;;; An override for response caching behavior.
+;;; A zero value indicates that the origin response's cache control headers should be used.
 (typename $cache_override_tag
     (flags (@witx repr u32)
-        ;;; Do not override the behavior specified in the origin response's cache control headers.
-        $none
         ;;; Do not cache the response to this request, regardless of the origin response's headers.
         $pass
         $ttl
@@ -109,7 +133,125 @@
 (typename $header_count u32)
 (typename $is_done u32)
 (typename $done_idx u32)
+(typename $inserted u32)
+(typename $ready_idx u32)
+
+(typename $port u16)
+(typename $timeout_ms u32)
+(typename $backend_exists u32)
+(typename $is_dynamic u32)
+(typename $is_ssl u32)
+(typename $backend_health
+    (enum (@witx tag u32)
+        $unknown
+        $healthy
+        $unhealthy))
 
 (typename $content_encodings
     (flags (@witx repr u32)
         $gzip))
+
+(typename $framing_headers_mode
+    (enum (@witx tag u32)
+        $automatic
+        $manually_from_headers))
+
+(typename $http_keepalive_mode
+    (enum (@witx tag u32)
+        $automatic
+        $no_keepalive))
+
+(typename $tls_version
+    (enum (@witx tag u32)
+        $tls_1
+        $tls_1_1
+        $tls_1_2
+        $tls_1_3))
+
+(typename $backend_config_options
+    (flags (@witx repr u32)
+        $reserved
+        $host_override
+        $connect_timeout
+        $first_byte_timeout
+        $between_bytes_timeout
+        $use_ssl
+        $ssl_min_version
+        $ssl_max_version
+        $cert_hostname
+        $ca_cert
+        $ciphers
+        $sni_hostname
+        $dont_pool))
+
+(typename $dynamic_backend_config
+    (record
+        (field $host_override (@witx pointer (@witx char8)))
+        (field $host_override_len u32)
+        (field $connect_timeout_ms u32)
+        (field $first_byte_timeout_ms u32)
+        (field $between_bytes_timeout_ms u32)
+        (field $ssl_min_version $tls_version)
+        (field $ssl_max_version $tls_version)
+        (field $cert_hostname (@witx pointer (@witx char8)))
+        (field $cert_hostname_len u32)
+        (field $ca_cert (@witx pointer (@witx char8)))
+        (field $ca_cert_len u32)
+        (field $ciphers (@witx pointer (@witx char8)))
+        (field $ciphers_len u32)
+        (field $sni_hostname (@witx pointer (@witx char8)))
+        (field $sni_hostname_len u32)
+))
+
+;;; TLS client certificate verified result from downstream.
+(typename $client_cert_verify_result
+    (enum (@witx tag u32)
+        ;;; Success value.
+        ;;;
+        ;;; This indicates that client certificate verified successfully.
+        $ok
+        ;;; bad certificate error.
+        ;;;
+        ;;; This error means the certificate is corrupt
+        ;;; (e.g., the certificate signatures do not verify correctly).
+        $bad_certificate
+        ;;; certificate revoked error.
+        ;;;
+        ;;; This error means the client certificate is revoked by its signer.
+        $certificate_revoked
+        ;;; certificate expired error.
+        ;;;
+        ;;; This error means the client certificate has expired or is not currently valid.
+        $certificate_expired
+        ;;; unknown CA error.
+        ;;;
+        ;;; This error means the valid certificate chain or partial chain was received,
+        ;;; but the certificate was not accepted because the CA certificate could not be
+        ;;; located or could not be matched with a known trust anchor.
+        $unknown_ca
+        ;;; certificate missing error.
+        ;;;
+        ;;; This error means the client does not provide a certificate
+        ;;; during the handshake..
+        $certificate_missing
+        ;;; certificate unknown error.
+        ;;;
+        ;;; This error means the client certificate was received, but some other (unspecified)
+        ;;; issue arose in processing the certificate, rendering it unacceptable.
+        $certificate_unknown))
+
+(typename $purge_options_mask
+    (flags (@witx repr u32)
+        $soft_purge
+        $ret_buf ;; all ret_buf fields must be populated
+    )
+)
+
+(typename $purge_options
+    (record
+        ;; JSON purge response as in https://developer.fastly.com/reference/api/purging/#purge-tag
+        (field $ret_buf_ptr (@witx pointer u8))
+        (field $ret_buf_len (@witx usize))
+        (field $ret_buf_nwritten_out (@witx pointer (@witx usize)))
+    )
+)

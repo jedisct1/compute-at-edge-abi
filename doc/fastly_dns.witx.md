@@ -1,15 +1,15 @@
 
-# Module: fastly_geo
+# Module: fastly_dns
 
 ## Table of contents
 
 ### Types list:
 
-[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`object_store_handle`](#object_store_handle)_] - [_[`pending_kv_lookup_handle`](#pending_kv_lookup_handle)_] - [_[`secret_store_handle`](#secret_store_handle)_] - [_[`secret_handle`](#secret_handle)_] - [_[`async_item_handle`](#async_item_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_] - [_[`inserted`](#inserted)_] - [_[`ready_idx`](#ready_idx)_] - [_[`port`](#port)_] - [_[`timeout_ms`](#timeout_ms)_] - [_[`backend_exists`](#backend_exists)_] - [_[`is_dynamic`](#is_dynamic)_] - [_[`is_ssl`](#is_ssl)_] - [_[`backend_health`](#backend_health)_] - [_[`content_encodings`](#content_encodings)_] - [_[`framing_headers_mode`](#framing_headers_mode)_] - [_[`http_keepalive_mode`](#http_keepalive_mode)_] - [_[`tls_version`](#tls_version)_] - [_[`backend_config_options`](#backend_config_options)_] - [_[`dynamic_backend_config`](#dynamic_backend_config)_] - [_[`client_cert_verify_result`](#client_cert_verify_result)_] - [_[`purge_options_mask`](#purge_options_mask)_] - [_[`purge_options`](#purge_options)_]
+[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`object_store_handle`](#object_store_handle)_] - [_[`pending_kv_lookup_handle`](#pending_kv_lookup_handle)_] - [_[`secret_store_handle`](#secret_store_handle)_] - [_[`secret_handle`](#secret_handle)_] - [_[`async_item_handle`](#async_item_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_] - [_[`inserted`](#inserted)_] - [_[`ready_idx`](#ready_idx)_] - [_[`port`](#port)_] - [_[`timeout_ms`](#timeout_ms)_] - [_[`backend_exists`](#backend_exists)_] - [_[`is_dynamic`](#is_dynamic)_] - [_[`is_ssl`](#is_ssl)_] - [_[`backend_health`](#backend_health)_] - [_[`content_encodings`](#content_encodings)_] - [_[`framing_headers_mode`](#framing_headers_mode)_] - [_[`http_keepalive_mode`](#http_keepalive_mode)_] - [_[`tls_version`](#tls_version)_] - [_[`backend_config_options`](#backend_config_options)_] - [_[`dynamic_backend_config`](#dynamic_backend_config)_] - [_[`client_cert_verify_result`](#client_cert_verify_result)_] - [_[`purge_options_mask`](#purge_options_mask)_] - [_[`purge_options`](#purge_options)_] - [_[`dns_lookup_handle`](#dns_lookup_handle)_]
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`lookup_addr()`](#lookup_addr)] - [[`lookup_reverse()`](#lookup_reverse)] - [[`lookup_txt()`](#lookup_txt)] - [[`lookup_wait()`](#lookup_wait)] - [[`lookup_raw()`](#lookup_raw)] - [[`lookup_wait_raw()`](#lookup_wait_raw)]
 
 ## Types
 
@@ -409,20 +409,118 @@ Structure, with the following members:
 
 ---
 
+### _[`dns_lookup_handle`](#dns_lookup_handle)_
+Alias for `handle`.
+
+
+---
+
 ## Functions
 
-### [`lookup()`](#lookup)
+### [`lookup_addr()`](#lookup_addr)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
+* **`name`**: `string`
+
+#### Output:
+
+* _[`dns_lookup_handle`](#dns_lookup_handle)_ mutable pointer
+
+> Lookup the IP addresses (IPv4 + IPv6) associated with a name.
+> Returns a handle to be consumed by lookup_wait().
+
+
+---
+
+### [`lookup_reverse()`](#lookup_reverse)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`ip`**: `string`
+
+#### Output:
+
+* _[`dns_lookup_handle`](#dns_lookup_handle)_ mutable pointer
+
+> Lookup the names associated with an IP address.
+> Returns a handle to be consumed by lookup_wait().
+
+
+---
+
+### [`lookup_txt()`](#lookup_txt)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`name`**: `string`
+
+#### Output:
+
+* _[`dns_lookup_handle`](#dns_lookup_handle)_ mutable pointer
+
+> Lookup the TXT records associated with a name.
+> Returns a handle to be consumed by lookup_wait().
+
+
+---
+
+### [`lookup_wait()`](#lookup_wait)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`handle`**: _[`dns_lookup_handle`](#dns_lookup_handle)_
 * **`buf`**: `char8` mutable pointer
 * **`buf_len`**: `usize`
+* **`cursor`**: _[`multi_value_cursor`](#multi_value_cursor)_
+* **`ending_cursor_out`**: _[`multi_value_cursor_result`](#multi_value_cursor_result)_ mutable pointer
 * **`nwritten_out`**: `usize` mutable pointer
 
 This function has no output.
+
+> Wait for a DNS lookup to complete.
+> Returns an array of byte strings.
+
+
+---
+
+### [`lookup_raw()`](#lookup_raw)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`query`**: `char8` pointer
+* **`query_len`**: `usize`
+
+#### Output:
+
+* _[`dns_lookup_handle`](#dns_lookup_handle)_ mutable pointer
+
+> Send a raw DNS query.
+> Returns a handle to be consumed by lookup_wait_raw().
+
+
+---
+
+### [`lookup_wait_raw()`](#lookup_wait_raw)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`handle`**: _[`dns_lookup_handle`](#dns_lookup_handle)_
+* **`response`**: `char8` mutable pointer
+* **`response_len`**: `usize`
+* **`nwritten_out`**: `usize` mutable pointer
+
+This function has no output.
+
+> Wait for a raw DNS response.
+> Returns a byte string.
+
 
 ---
 

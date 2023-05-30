@@ -1,5 +1,5 @@
 
-# Module: fastly_geo
+# Module: fastly_async_io
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`select()`](#select)] - [[`is_ready()`](#is_ready)]
 
 ## Types
 
@@ -411,18 +411,51 @@ Structure, with the following members:
 
 ## Functions
 
-### [`lookup()`](#lookup)
+### [`select()`](#select)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`nwritten_out`**: `usize` mutable pointer
+* **`hs`**: _[`async_item_handle`](#async_item_handle)_ mutable slice
+* **`timeout_ms`**: `u32`
 
-This function has no output.
+#### Output:
+
+* _[`ready_idx`](#ready_idx)_ mutable pointer
+
+> Blocks until one of the given objects is ready for I/O, or the optional timeout expires.
+>
+> Valid object handles includes bodies and pending requests. See the `async_item_handle`
+> definition for more details, including what I/O actions are associated with each handle
+> type.
+>
+> The timeout is specified in milliseconds, or 0 if no timeout is desired.
+>
+> Returns the _index_ (not handle!) of the first object that is ready, or u32::MAX if the
+> timeout expires before any objects are ready for I/O.
+
+
+---
+
+### [`is_ready()`](#is_ready)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`handle`**: _[`async_item_handle`](#async_item_handle)_
+
+#### Output:
+
+* _[`is_done`](#is_done)_ mutable pointer
+
+> Returns 1 if the given async item is "ready" for its associated I/O action, 0 otherwise.
+>
+> If an object is ready, the I/O action is guaranteed to complete without blocking.
+>
+> Valid object handles includes bodies and pending requests. See the `async_item_handle`
+> definition for more details, including what I/O actions are associated with each handle
+> type.
+
 
 ---
 

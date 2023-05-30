@@ -1,5 +1,5 @@
 
-# Module: fastly_geo
+# Module: fastly_object_store
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`lookup()`](#lookup)]
+[**[All](#functions)**] - [[`open()`](#open)] - [[`lookup()`](#lookup)] - [[`lookup_async()`](#lookup_async)] - [[`pending_lookup_wait()`](#pending_lookup_wait)] - [[`insert()`](#insert)]
 
 ## Types
 
@@ -411,16 +411,65 @@ Structure, with the following members:
 
 ## Functions
 
+### [`open()`](#open)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`name`**: `string`
+
+#### Output:
+
+* _[`object_store_handle`](#object_store_handle)_ mutable pointer
+
+---
+
 ### [`lookup()`](#lookup)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`addr_octets`**: `char8` pointer
-* **`addr_len`**: `usize`
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`nwritten_out`**: `usize` mutable pointer
+* **`store`**: _[`object_store_handle`](#object_store_handle)_
+* **`key`**: `string`
+* **`body_handle_out`**: _[`body_handle`](#body_handle)_ mutable pointer
+
+This function has no output.
+
+---
+
+### [`lookup_async()`](#lookup_async)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`store`**: _[`object_store_handle`](#object_store_handle)_
+* **`key`**: `string`
+* **`pending_body_handle_out`**: _[`pending_kv_lookup_handle`](#pending_kv_lookup_handle)_ mutable pointer
+
+This function has no output.
+
+---
+
+### [`pending_lookup_wait()`](#pending_lookup_wait)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`pending_body_handle`**: _[`pending_kv_lookup_handle`](#pending_kv_lookup_handle)_
+* **`body_handle_out`**: _[`body_handle`](#body_handle)_ mutable pointer
+
+This function has no output.
+
+---
+
+### [`insert()`](#insert)
+Returned error type: _[`fastly_status`](#fastly_status)_
+
+#### Input:
+
+* **`store`**: _[`object_store_handle`](#object_store_handle)_
+* **`key`**: `string`
+* **`body_handle`**: _[`body_handle`](#body_handle)_
 
 This function has no output.
 
