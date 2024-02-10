@@ -18,6 +18,7 @@ enum fastly_status: (tag: u32)
     - httpheadtoolarge: 11
     - httpinvalidstatus: 12
     - limitexceeded: 13
+    - again: 14
 
 enum http_version: (tag: u32)
     - http_09: 0
@@ -46,7 +47,11 @@ alias dictionary_handle = handle
 
 alias object_store_handle = handle
 
-alias pending_kv_lookup_handle = handle
+alias pending_object_store_lookup_handle = handle
+
+alias pending_object_store_insert_handle = handle
+
+alias pending_object_store_delete_handle = handle
 
 alias secret_store_handle = handle
 
@@ -72,6 +77,8 @@ alias header_count = u32
 alias is_done = u32
 
 alias done_idx = u32
+
+alias is_valid = u32
 
 alias inserted = u32
 
@@ -125,6 +132,8 @@ predefined constants for backend_config_options:
     - ciphers = 0x400
     - sni_hostname = 0x800
     - dont_pool = 0x1000
+    - client_cert = 0x2000
+    - grpc = 0x4000
 
 struct dynamic_backend_config:
     - host_override: mut_ptr<char8>
@@ -142,6 +151,9 @@ struct dynamic_backend_config:
     - ciphers_len: u32
     - sni_hostname: mut_ptr<char8>
     - sni_hostname_len: u32
+    - client_certificate: mut_ptr<char8>
+    - client_certificate_len: u32
+    - client_key: secret_handle
 
 enum client_cert_verify_result: (tag: u32)
     - ok: 0
@@ -161,6 +173,57 @@ struct purge_options:
     - ret_buf_ptr: mut_ptr<u8>
     - ret_buf_len: usize
     - ret_buf_nwritten_out: mut_ptr<usize>
+
+enum send_error_detail_tag: (tag: u32)
+    - uninitialized: 0
+    - ok: 1
+    - dns_timeout: 2
+    - dns_error: 3
+    - destination_not_found: 4
+    - destination_unavailable: 5
+    - destination_ip_unroutable: 6
+    - connection_refused: 7
+    - connection_terminated: 8
+    - connection_timeout: 9
+    - connection_limit_reached: 10
+    - tls_certificate_error: 11
+    - tls_configuration_error: 12
+    - http_incomplete_response: 13
+    - http_response_header_section_too_large: 14
+    - http_response_body_too_large: 15
+    - http_response_timeout: 16
+    - http_response_status_invalid: 17
+    - http_upgrade_failed: 18
+    - http_protocol_error: 19
+    - http_request_cache_key_invalid: 20
+    - http_request_uri_invalid: 21
+    - internal_error: 22
+    - tls_alert_received: 23
+    - tls_protocol_error: 24
+
+constants send_error_detail_mask: (type: u32)
+predefined constants for send_error_detail_mask:
+    - reserved = 0x1
+    - dns_error_rcode = 0x2
+    - dns_error_info_code = 0x4
+    - tls_alert_id = 0x8
+
+struct send_error_detail:
+    - tag: send_error_detail_tag
+    - mask: send_error_detail_mask
+    - dns_error_rcode: u16
+    - dns_error_info_code: u16
+    - tls_alert_id: u8
+
+alias blocked = u32
+
+alias rate = u32
+
+alias count = u32
+
+alias has = u32
+
+alias body_length = u64
 
 
 ---------------------- Module: [fastly_abi] ----------------------
@@ -437,6 +500,37 @@ function get_hits(): fastly_status
         - mut_ptr<cache_hit_count>
 
 
+---------------------- Module: [fastly_config_store] ----------------------
+
+alias config_store_handle = handle
+
+function open(): fastly_status
+    - Input:
+        - name: string
+    - Output:
+        - mut_ptr<config_store_handle>
+
+function get(): fastly_status
+    - Input:
+        - h: config_store_handle
+        - key: string
+        - value: mut_ptr<char8>
+        - value_max_len: usize
+    - Output:
+        - mut_ptr<num_bytes>
+
+
+---------------------- Module: [fastly_device_detection] ----------------------
+
+function lookup(): fastly_status
+    - Input:
+        - user_agent: string
+        - buf: mut_ptr<char8>
+        - buf_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+
 ---------------------- Module: [fastly_dictionary] ----------------------
 
 function open(): fastly_status
@@ -503,6 +597,58 @@ function lookup_wait_raw(): fastly_status
     - No output
 
 
+---------------------- Module: [fastly_erl] ----------------------
+
+function check_rate(): fastly_status
+    - Input:
+        - rc: string
+        - entry: string
+        - delta: u32
+        - window: u32
+        - limit: u32
+        - pb: string
+        - ttl: u32
+    - Output:
+        - mut_ptr<blocked>
+
+function ratecounter_increment(): fastly_status
+    - Input:
+        - rc: string
+        - entry: string
+        - delta: u32
+    - No output
+
+function ratecounter_lookup_rate(): fastly_status
+    - Input:
+        - rc: string
+        - entry: string
+        - window: u32
+    - Output:
+        - mut_ptr<rate>
+
+function ratecounter_lookup_count(): fastly_status
+    - Input:
+        - rc: string
+        - entry: string
+        - duration: u32
+    - Output:
+        - mut_ptr<count>
+
+function penaltybox_add(): fastly_status
+    - Input:
+        - pb: string
+        - entry: string
+        - ttl: u32
+    - No output
+
+function penaltybox_has(): fastly_status
+    - Input:
+        - pb: string
+        - entry: string
+    - Output:
+        - mut_ptr<has>
+
+
 ---------------------- Module: [fastly_geo] ----------------------
 
 function lookup(): fastly_status
@@ -548,6 +694,54 @@ function close(): fastly_status
         - h: body_handle
     - No output
 
+function abandon(): fastly_status
+    - Input:
+        - h: body_handle
+    - No output
+
+function trailer_append(): fastly_status
+    - Input:
+        - h: body_handle
+        - name: mut_slice<u8>
+        - value: mut_slice<u8>
+    - No output
+
+function trailer_names_get(): fastly_status
+    - Input:
+        - h: body_handle
+        - buf: mut_ptr<char8>
+        - buf_len: usize
+        - cursor: multi_value_cursor
+        - ending_cursor_out: mut_ptr<multi_value_cursor_result>
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+function trailer_value_get(): fastly_status
+    - Input:
+        - h: body_handle
+        - name: mut_slice<u8>
+        - value: mut_ptr<char8>
+        - value_max_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+function trailer_values_get(): fastly_status
+    - Input:
+        - h: body_handle
+        - name: mut_slice<u8>
+        - buf: mut_ptr<char8>
+        - buf_len: usize
+        - cursor: multi_value_cursor
+        - ending_cursor_out: mut_ptr<multi_value_cursor_result>
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+function known_length(): fastly_status
+    - Input:
+        - h: body_handle
+    - Output:
+        - mut_ptr<body_length>
+
 
 ---------------------- Module: [fastly_http_req] ----------------------
 
@@ -578,6 +772,27 @@ function downstream_client_ip_addr(): fastly_status
         - addr_octets_out: mut_ptr<char8>
     - Output:
         - mut_ptr<num_bytes>
+
+function downstream_client_h2_fingerprint(): fastly_status
+    - Input:
+        - h2fp_out: mut_ptr<char8>
+        - h2fp_max_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+function downstream_client_request_id(): fastly_status
+    - Input:
+        - reqid_out: mut_ptr<char8>
+        - reqid_max_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
+
+function downstream_client_oh_fingerprint(): fastly_status
+    - Input:
+        - ohfp_out: mut_ptr<char8>
+        - ohfp_max_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
 
 function downstream_tls_cipher_openssl_name(): fastly_status
     - Input:
@@ -616,6 +831,13 @@ function downstream_tls_ja3_md5(): fastly_status
         - cja3_md5_out: mut_ptr<char8>
     - Output:
         - mut_ptr<num_bytes>
+
+function downstream_tls_ja4(): fastly_status
+    - Input:
+        - ja4_out: mut_ptr<char8>
+        - ja4_max_len: usize
+        - nwritten_out: mut_ptr<usize>
+    - No output
 
 function new(): fastly_status
     - Output:
@@ -740,6 +962,16 @@ function send(): fastly_status
         - mut_ptr<response_handle>
         - mut_ptr<body_handle>
 
+function send_v2(): fastly_status
+    - Input:
+        - h: request_handle
+        - b: body_handle
+        - backend: string
+        - error_detail: mut_ptr<send_error_detail>
+    - Output:
+        - mut_ptr<response_handle>
+        - mut_ptr<body_handle>
+
 function send_async(): fastly_status
     - Input:
         - h: request_handle
@@ -764,9 +996,26 @@ function pending_req_poll(): fastly_status
         - mut_ptr<response_handle>
         - mut_ptr<body_handle>
 
+function pending_req_poll_v2(): fastly_status
+    - Input:
+        - h: pending_request_handle
+        - error_detail: mut_ptr<send_error_detail>
+    - Output:
+        - mut_ptr<is_done>
+        - mut_ptr<response_handle>
+        - mut_ptr<body_handle>
+
 function pending_req_wait(): fastly_status
     - Input:
         - h: pending_request_handle
+    - Output:
+        - mut_ptr<response_handle>
+        - mut_ptr<body_handle>
+
+function pending_req_wait_v2(): fastly_status
+    - Input:
+        - h: pending_request_handle
+        - error_detail: mut_ptr<send_error_detail>
     - Output:
         - mut_ptr<response_handle>
         - mut_ptr<body_handle>
@@ -778,6 +1027,19 @@ function pending_req_select(): fastly_status
         - mut_ptr<done_idx>
         - mut_ptr<response_handle>
         - mut_ptr<body_handle>
+
+function pending_req_select_v2(): fastly_status
+    - Input:
+        - hs: mut_slice<pending_request_handle>
+        - error_detail: mut_ptr<send_error_detail>
+    - Output:
+        - mut_ptr<done_idx>
+        - mut_ptr<response_handle>
+        - mut_ptr<body_handle>
+
+function fastly_key_is_valid(): fastly_status
+    - Output:
+        - mut_ptr<is_valid>
 
 function close(): fastly_status
     - Input:
@@ -802,6 +1064,18 @@ function redirect_to_websocket_proxy(): fastly_status
 
 function redirect_to_grip_proxy(): fastly_status
     - Input:
+        - backend_name: string
+    - No output
+
+function redirect_to_websocket_proxy_v2(): fastly_status
+    - Input:
+        - h: request_handle
+        - backend_name: string
+    - No output
+
+function redirect_to_grip_proxy_v2(): fastly_status
+    - Input:
+        - h: request_handle
         - backend_name: string
     - No output
 
@@ -994,13 +1268,20 @@ function lookup_async(): fastly_status
     - Input:
         - store: object_store_handle
         - key: string
-        - pending_body_handle_out: mut_ptr<pending_kv_lookup_handle>
+        - pending_handle_out: mut_ptr<pending_object_store_lookup_handle>
     - No output
 
 function pending_lookup_wait(): fastly_status
     - Input:
-        - pending_body_handle: pending_kv_lookup_handle
+        - pending_objstr_handle: pending_object_store_lookup_handle
         - body_handle_out: mut_ptr<body_handle>
+    - No output
+
+function lookup_as_fd(): fastly_status
+    - Input:
+        - store: object_store_handle
+        - key: string
+        - fd_out: mut_ptr<u32>
     - No output
 
 function insert(): fastly_status
@@ -1008,6 +1289,31 @@ function insert(): fastly_status
         - store: object_store_handle
         - key: string
         - body_handle: body_handle
+    - No output
+
+function insert_async(): fastly_status
+    - Input:
+        - store: object_store_handle
+        - key: string
+        - body_handle: body_handle
+        - pending_handle_out: mut_ptr<pending_object_store_insert_handle>
+    - No output
+
+function pending_insert_wait(): fastly_status
+    - Input:
+        - pending_objstr_handle: pending_object_store_insert_handle
+    - No output
+
+function delete_async(): fastly_status
+    - Input:
+        - store: object_store_handle
+        - key: string
+        - pending_handle_out: mut_ptr<pending_object_store_delete_handle>
+    - No output
+
+function pending_delete_wait(): fastly_status
+    - Input:
+        - pending_objstr_handle: pending_object_store_delete_handle
     - No output
 
 
@@ -1043,6 +1349,13 @@ function plaintext(): fastly_status
         - buf_len: usize
         - nwritten_out: mut_ptr<usize>
     - No output
+
+function from_bytes(): fastly_status
+    - Input:
+        - buf: mut_ptr<char8>
+        - buf_len: usize
+    - Output:
+        - mut_ptr<secret_handle>
 
 
 ---------------------- Module: [fastly_uap] ----------------------
