@@ -25,8 +25,73 @@
         (result $err (expected $num_bytes (error $fastly_status)))
     )
 
+    ;;; Frees the body on the host.
+    ;;;
+    ;;; For streaming bodies, this is a _successful_ stream termination, which will signal
+    ;;; via framing that the body transfer is complete.
     (@interface func (export "close")
         (param $h $body_handle)
         (result $err (expected (error $fastly_status)))
+    )
+
+    ;;; Frees a streaming body on the host _unsuccessfully_, so that framing makes clear that
+    ;;; the body is incomplete.
+    (@interface func (export "abandon")
+        (param $h $body_handle)
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "trailer_append")
+        (param $h $body_handle)
+        (param $name (list u8))
+        (param $value (list u8))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "trailer_names_get")
+        (param $h $body_handle)
+        (param $buf (@witx pointer (@witx char8)))
+        (param $buf_len (@witx usize))
+        (param $cursor $multi_value_cursor)
+        (param $ending_cursor_out (@witx pointer $multi_value_cursor_result))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "trailer_value_get")
+        (param $h $body_handle)
+        (param $name (list u8))
+        (param $value (@witx pointer (@witx char8)))
+        (param $value_max_len (@witx usize))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    (@interface func (export "trailer_values_get")
+        (param $h $body_handle)
+        (param $name (list u8))
+        (param $buf (@witx pointer (@witx char8)))
+        (param $buf_len (@witx usize))
+        (param $cursor $multi_value_cursor)
+        (param $ending_cursor_out (@witx pointer $multi_value_cursor_result))
+        (param $nwritten_out (@witx pointer (@witx usize)))
+        (result $err (expected (error $fastly_status)))
+    )
+
+    ;;; Returns a u64 body length if the length of a body is known, or `FastlyStatus::None`
+    ;;; otherwise.
+    ;;;
+    ;;; If the length is unknown, it is likely due to the body arising from an HTTP/1.1 message with
+    ;;; chunked encoding, an HTTP/2 or later message with no `content-length`, or being a streaming
+    ;;; body.
+    ;;;
+    ;;; Note that receiving a length from this function does not guarantee that the full number of
+    ;;; bytes can actually be read from the body. For example, when proxying a response from a
+    ;;; backend, this length may reflect the `content-length` promised in the response, but if the
+    ;;; backend connection is closed prematurely, fewer bytes may be delivered before this body
+    ;;; handle can no longer be read.
+    (@interface func (export "known_length")
+        (param $h $body_handle)
+        (result $err (expected $body_length (error $fastly_status)))
     )
 )

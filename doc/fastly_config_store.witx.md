@@ -1,15 +1,15 @@
 
-# Module: fastly_http_body
+# Module: fastly_config_store
 
 ## Table of contents
 
 ### Types list:
 
-[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`object_store_handle`](#object_store_handle)_] - [_[`pending_object_store_lookup_handle`](#pending_object_store_lookup_handle)_] - [_[`pending_object_store_insert_handle`](#pending_object_store_insert_handle)_] - [_[`pending_object_store_delete_handle`](#pending_object_store_delete_handle)_] - [_[`secret_store_handle`](#secret_store_handle)_] - [_[`secret_handle`](#secret_handle)_] - [_[`async_item_handle`](#async_item_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_] - [_[`is_valid`](#is_valid)_] - [_[`inserted`](#inserted)_] - [_[`ready_idx`](#ready_idx)_] - [_[`port`](#port)_] - [_[`timeout_ms`](#timeout_ms)_] - [_[`backend_exists`](#backend_exists)_] - [_[`is_dynamic`](#is_dynamic)_] - [_[`is_ssl`](#is_ssl)_] - [_[`backend_health`](#backend_health)_] - [_[`content_encodings`](#content_encodings)_] - [_[`framing_headers_mode`](#framing_headers_mode)_] - [_[`http_keepalive_mode`](#http_keepalive_mode)_] - [_[`tls_version`](#tls_version)_] - [_[`backend_config_options`](#backend_config_options)_] - [_[`dynamic_backend_config`](#dynamic_backend_config)_] - [_[`client_cert_verify_result`](#client_cert_verify_result)_] - [_[`purge_options_mask`](#purge_options_mask)_] - [_[`purge_options`](#purge_options)_] - [_[`send_error_detail_tag`](#send_error_detail_tag)_] - [_[`send_error_detail_mask`](#send_error_detail_mask)_] - [_[`send_error_detail`](#send_error_detail)_] - [_[`blocked`](#blocked)_] - [_[`rate`](#rate)_] - [_[`count`](#count)_] - [_[`has`](#has)_] - [_[`body_length`](#body_length)_]
+[**[All](#types)**] - [_[`fastly_status`](#fastly_status)_] - [_[`http_version`](#http_version)_] - [_[`http_status`](#http_status)_] - [_[`body_write_end`](#body_write_end)_] - [_[`body_handle`](#body_handle)_] - [_[`request_handle`](#request_handle)_] - [_[`response_handle`](#response_handle)_] - [_[`pending_request_handle`](#pending_request_handle)_] - [_[`endpoint_handle`](#endpoint_handle)_] - [_[`dictionary_handle`](#dictionary_handle)_] - [_[`object_store_handle`](#object_store_handle)_] - [_[`pending_object_store_lookup_handle`](#pending_object_store_lookup_handle)_] - [_[`pending_object_store_insert_handle`](#pending_object_store_insert_handle)_] - [_[`pending_object_store_delete_handle`](#pending_object_store_delete_handle)_] - [_[`secret_store_handle`](#secret_store_handle)_] - [_[`secret_handle`](#secret_handle)_] - [_[`async_item_handle`](#async_item_handle)_] - [_[`multi_value_cursor`](#multi_value_cursor)_] - [_[`multi_value_cursor_result`](#multi_value_cursor_result)_] - [_[`cache_override_tag`](#cache_override_tag)_] - [_[`num_bytes`](#num_bytes)_] - [_[`header_count`](#header_count)_] - [_[`is_done`](#is_done)_] - [_[`done_idx`](#done_idx)_] - [_[`is_valid`](#is_valid)_] - [_[`inserted`](#inserted)_] - [_[`ready_idx`](#ready_idx)_] - [_[`port`](#port)_] - [_[`timeout_ms`](#timeout_ms)_] - [_[`backend_exists`](#backend_exists)_] - [_[`is_dynamic`](#is_dynamic)_] - [_[`is_ssl`](#is_ssl)_] - [_[`backend_health`](#backend_health)_] - [_[`content_encodings`](#content_encodings)_] - [_[`framing_headers_mode`](#framing_headers_mode)_] - [_[`http_keepalive_mode`](#http_keepalive_mode)_] - [_[`tls_version`](#tls_version)_] - [_[`backend_config_options`](#backend_config_options)_] - [_[`dynamic_backend_config`](#dynamic_backend_config)_] - [_[`client_cert_verify_result`](#client_cert_verify_result)_] - [_[`purge_options_mask`](#purge_options_mask)_] - [_[`purge_options`](#purge_options)_] - [_[`send_error_detail_tag`](#send_error_detail_tag)_] - [_[`send_error_detail_mask`](#send_error_detail_mask)_] - [_[`send_error_detail`](#send_error_detail)_] - [_[`blocked`](#blocked)_] - [_[`rate`](#rate)_] - [_[`count`](#count)_] - [_[`has`](#has)_] - [_[`body_length`](#body_length)_] - [_[`config_store_handle`](#config_store_handle)_]
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`append()`](#append)] - [[`new()`](#new)] - [[`read()`](#read)] - [[`write()`](#write)] - [[`close()`](#close)] - [[`abandon()`](#abandon)] - [[`trailer_append()`](#trailer_append)] - [[`trailer_names_get()`](#trailer_names_get)] - [[`trailer_value_get()`](#trailer_value_get)] - [[`trailer_values_get()`](#trailer_values_get)] - [[`known_length()`](#known_length)]
+[**[All](#functions)**] - [[`open()`](#open)] - [[`get()`](#get)]
 
 ## Types
 
@@ -532,177 +532,43 @@ Alias for `u64`.
 
 ---
 
+### _[`config_store_handle`](#config_store_handle)_
+Alias for `handle`.
+
+
+> A handle to an Config Store.
+
+
+---
+
 ## Functions
 
-### [`append()`](#append)
+### [`open()`](#open)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`dest`**: _[`body_handle`](#body_handle)_
-* **`src`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
----
-
-### [`new()`](#new)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
+* **`name`**: `string`
 
 #### Output:
 
-* _[`body_handle`](#body_handle)_ mutable pointer
+* _[`config_store_handle`](#config_store_handle)_ mutable pointer
 
 ---
 
-### [`read()`](#read)
+### [`get()`](#get)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`buf`**: `u8` mutable pointer
-* **`buf_len`**: `usize`
-
-#### Output:
-
-* _[`num_bytes`](#num_bytes)_ mutable pointer
-
----
-
-### [`write()`](#write)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`buf`**: `u8` mutable slice
-* **`end`**: _[`body_write_end`](#body_write_end)_
-
-#### Output:
-
-* _[`num_bytes`](#num_bytes)_ mutable pointer
-
----
-
-### [`close()`](#close)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
-> Frees the body on the host.
->
-> For streaming bodies, this is a _successful_ stream termination, which will signal
-> via framing that the body transfer is complete.
-
-
----
-
-### [`abandon()`](#abandon)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
-> Frees a streaming body on the host _unsuccessfully_, so that framing makes clear that
-> the body is incomplete.
-
-
----
-
-### [`trailer_append()`](#trailer_append)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
-* **`value`**: `u8` mutable slice
-
-This function has no output.
-
----
-
-### [`trailer_names_get()`](#trailer_names_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`cursor`**: _[`multi_value_cursor`](#multi_value_cursor)_
-* **`ending_cursor_out`**: _[`multi_value_cursor_result`](#multi_value_cursor_result)_ mutable pointer
-* **`nwritten_out`**: `usize` mutable pointer
-
-This function has no output.
-
----
-
-### [`trailer_value_get()`](#trailer_value_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
+* **`h`**: _[`config_store_handle`](#config_store_handle)_
+* **`key`**: `string`
 * **`value`**: `char8` mutable pointer
 * **`value_max_len`**: `usize`
-* **`nwritten_out`**: `usize` mutable pointer
-
-This function has no output.
-
----
-
-### [`trailer_values_get()`](#trailer_values_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`cursor`**: _[`multi_value_cursor`](#multi_value_cursor)_
-* **`ending_cursor_out`**: _[`multi_value_cursor_result`](#multi_value_cursor_result)_ mutable pointer
-* **`nwritten_out`**: `usize` mutable pointer
-
-This function has no output.
-
----
-
-### [`known_length()`](#known_length)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
 
 #### Output:
 
-* _[`body_length`](#body_length)_ mutable pointer
-
-> Returns a u64 body length if the length of a body is known, or `FastlyStatus::None`
-> otherwise.
->
-> If the length is unknown, it is likely due to the body arising from an HTTP/1.1 message with
-> chunked encoding, an HTTP/2 or later message with no `content-length`, or being a streaming
-> body.
->
-> Note that receiving a length from this function does not guarantee that the full number of
-> bytes can actually be read from the body. For example, when proxying a response from a
-> backend, this length may reflect the `content-length` promised in the response, but if the
-> backend connection is closed prematurely, fewer bytes may be delivered before this body
-> handle can no longer be read.
-
+* _[`num_bytes`](#num_bytes)_ mutable pointer
 
 ---
 

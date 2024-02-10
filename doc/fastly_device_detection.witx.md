@@ -1,5 +1,5 @@
 
-# Module: fastly_http_body
+# Module: fastly_device_detection
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 
 ### Functions list:
 
-[**[All](#functions)**] - [[`append()`](#append)] - [[`new()`](#new)] - [[`read()`](#read)] - [[`write()`](#write)] - [[`close()`](#close)] - [[`abandon()`](#abandon)] - [[`trailer_append()`](#trailer_append)] - [[`trailer_names_get()`](#trailer_names_get)] - [[`trailer_value_get()`](#trailer_value_get)] - [[`trailer_values_get()`](#trailer_values_get)] - [[`known_length()`](#known_length)]
+[**[All](#functions)**] - [[`lookup()`](#lookup)]
 
 ## Types
 
@@ -534,175 +534,17 @@ Alias for `u64`.
 
 ## Functions
 
-### [`append()`](#append)
+### [`lookup()`](#lookup)
 Returned error type: _[`fastly_status`](#fastly_status)_
 
 #### Input:
 
-* **`dest`**: _[`body_handle`](#body_handle)_
-* **`src`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
----
-
-### [`new()`](#new)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-
-#### Output:
-
-* _[`body_handle`](#body_handle)_ mutable pointer
-
----
-
-### [`read()`](#read)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`buf`**: `u8` mutable pointer
-* **`buf_len`**: `usize`
-
-#### Output:
-
-* _[`num_bytes`](#num_bytes)_ mutable pointer
-
----
-
-### [`write()`](#write)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`buf`**: `u8` mutable slice
-* **`end`**: _[`body_write_end`](#body_write_end)_
-
-#### Output:
-
-* _[`num_bytes`](#num_bytes)_ mutable pointer
-
----
-
-### [`close()`](#close)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
-> Frees the body on the host.
->
-> For streaming bodies, this is a _successful_ stream termination, which will signal
-> via framing that the body transfer is complete.
-
-
----
-
-### [`abandon()`](#abandon)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-
-This function has no output.
-
-> Frees a streaming body on the host _unsuccessfully_, so that framing makes clear that
-> the body is incomplete.
-
-
----
-
-### [`trailer_append()`](#trailer_append)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
-* **`value`**: `u8` mutable slice
-
-This function has no output.
-
----
-
-### [`trailer_names_get()`](#trailer_names_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
+* **`user_agent`**: `string`
 * **`buf`**: `char8` mutable pointer
 * **`buf_len`**: `usize`
-* **`cursor`**: _[`multi_value_cursor`](#multi_value_cursor)_
-* **`ending_cursor_out`**: _[`multi_value_cursor_result`](#multi_value_cursor_result)_ mutable pointer
 * **`nwritten_out`**: `usize` mutable pointer
 
 This function has no output.
-
----
-
-### [`trailer_value_get()`](#trailer_value_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
-* **`value`**: `char8` mutable pointer
-* **`value_max_len`**: `usize`
-* **`nwritten_out`**: `usize` mutable pointer
-
-This function has no output.
-
----
-
-### [`trailer_values_get()`](#trailer_values_get)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-* **`name`**: `u8` mutable slice
-* **`buf`**: `char8` mutable pointer
-* **`buf_len`**: `usize`
-* **`cursor`**: _[`multi_value_cursor`](#multi_value_cursor)_
-* **`ending_cursor_out`**: _[`multi_value_cursor_result`](#multi_value_cursor_result)_ mutable pointer
-* **`nwritten_out`**: `usize` mutable pointer
-
-This function has no output.
-
----
-
-### [`known_length()`](#known_length)
-Returned error type: _[`fastly_status`](#fastly_status)_
-
-#### Input:
-
-* **`h`**: _[`body_handle`](#body_handle)_
-
-#### Output:
-
-* _[`body_length`](#body_length)_ mutable pointer
-
-> Returns a u64 body length if the length of a body is known, or `FastlyStatus::None`
-> otherwise.
->
-> If the length is unknown, it is likely due to the body arising from an HTTP/1.1 message with
-> chunked encoding, an HTTP/2 or later message with no `content-length`, or being a streaming
-> body.
->
-> Note that receiving a length from this function does not guarantee that the full number of
-> bytes can actually be read from the body. For example, when proxying a response from a
-> backend, this length may reflect the `content-length` promised in the response, but if the
-> backend connection is closed prematurely, fewer bytes may be delivered before this body
-> handle can no longer be read.
-
 
 ---
 
