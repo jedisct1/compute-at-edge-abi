@@ -1414,9 +1414,6 @@ function parse(): fastly_status
 > using the same syntax as [interface types], some features with syntax
 > similar to [gc types], as well as a few special features of its own.
 >
-> `witx` is actively evolving. Expect backwards-incompatible changes,
-> particularly in the areas where `witx` differs from `wit`.
->
 > The initial goal for `witx` is just to have a language suitable for
 > expressing [WASI] APIs in, to serve as the vocabulary for proposing changes
 > to existing APIs and proposing new APIs. Initially, while it uses some of
