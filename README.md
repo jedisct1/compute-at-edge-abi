@@ -1,6 +1,6 @@
-# Fastly Compute@Edge ABI
+# Fastly Compute ABI
 
-This repository contains `witx` definitions for the Compute@Edge platform ABI.
+This repository contains `witx` definitions for the Fastly Compute platform ABI.
 
 This fork includes definitions that have been [updated](https://github.com/jedisct1/compute-at-edge-abi/tree/witx-next/witx-next)
 to be compatible with the [witx-codegen](https://github.com/jedisct1/witx-codegen) code generator.
